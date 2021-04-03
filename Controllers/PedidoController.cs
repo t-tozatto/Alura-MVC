@@ -1,6 +1,7 @@
 ﻿using Alura_MVC.Models;
 using Alura_MVC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Alura_MVC.Controllers
 {
@@ -36,6 +37,12 @@ namespace Alura_MVC.Controllers
         public IActionResult Resumo()
         {
             return View(pedidoRepository.GetPedido());
+        }
+
+        [HttpPut] 
+        public void AtualizarQuantidadeItem([FromBody] object itemPedido)
+        {
+            ItemPedido item = JsonConvert.DeserializeObject<ItemPedido>(itemPedido.ToString());
         }
     }
 }

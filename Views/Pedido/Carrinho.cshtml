@@ -29,7 +29,7 @@
             foreach (ItemPedido itemPedido in Model)
             {
                 valorTotal += itemPedido.Quantidade * itemPedido.PrecoUnitario;
-                <div class="row row-center linha-produto">
+                <div class="row row-center linha-produto" item-id="@itemPedido.Id">
                     <div class="col-md-3">
                         <img class="img-produto-carrinho" src="/images/produtos/large_@(itemPedido.Produto.Codigo).jpg" />
                     </div>
@@ -45,7 +45,7 @@
                             <input type="text" value="@itemPedido.Quantidade"
                                    class="form-control text-center" />
                             <span class="input-group-btn">
-                                <button class="btn btn-default">
+                                <button class="btn btn-default" onclick="IncrementoQuantidade(this)">
                                     <span class="glyphicon-plus"></span>
                                 </button>
                             </span>
@@ -89,3 +89,24 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function IncrementoQuantidade(btnIncremento) {
+            var divProduto = $(btnIncremento).parents('[item-id]');
+            const idItem = $(divProduto).attr('item-id');
+            const quantidadeAtual = $(divProduto).find('input').val();
+
+            $.ajax({
+                url: '/pedido/AtualizarQuantidadeItem',
+                contentType: 'application/json; charset=utf-8',
+                type: 'PUT',
+                data: JSON.stringify({
+                    Id: idItem,
+                    Quantidade: quantidadeAtual
+                })
+            });
+        }
+    </script>
+}
