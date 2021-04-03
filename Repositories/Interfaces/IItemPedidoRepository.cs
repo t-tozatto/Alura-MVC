@@ -2,6 +2,6 @@
 {
     public interface IItemPedidoRepository
     {
-        
+        void UpdateQuantidade(int id, int quantidade);
     }
 }

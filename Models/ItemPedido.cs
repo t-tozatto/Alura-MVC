@@ -42,9 +42,20 @@ namespace Alura_MVC.Models
             Quantidade = quantidade;
         }
 
-        public void IncrementarQuantidade()
+        internal void IncrementarQuantidade()
         {
             Quantidade += 1;
+        }
+
+        internal void DiminuirQuantidade()
+        {
+            if (Quantidade > 0)
+                Quantidade += 1;
+        }
+
+        internal void UpdateQuantidade(int quantidade)
+        {
+            Quantidade = quantidade;
         }
     }
 }

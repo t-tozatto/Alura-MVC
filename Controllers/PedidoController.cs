@@ -9,12 +9,15 @@ namespace Alura_MVC.Controllers
     {
         private readonly IProdutoRepository produtoRepository;
         private readonly IPedidoRepository pedidoRepository;
+        private readonly IItemPedidoRepository itemPedidoRepository;
 
         public PedidoController(IProdutoRepository produtoRepository,
-            IPedidoRepository pedidoRepository)
+            IPedidoRepository pedidoRepository,
+            IItemPedidoRepository itemPedidoRepository)
         {
             this.produtoRepository = produtoRepository;
             this.pedidoRepository = pedidoRepository;
+            this.itemPedidoRepository = itemPedidoRepository;
         }
 
         public IActionResult Cadastro()
@@ -43,6 +46,7 @@ namespace Alura_MVC.Controllers
         public void AtualizarQuantidadeItem([FromBody] object itemPedido)
         {
             ItemPedido item = JsonConvert.DeserializeObject<ItemPedido>(itemPedido.ToString());
+            itemPedidoRepository.UpdateQuantidade(item.Id, item.Quantidade);
         }
     }
 }

@@ -38,14 +38,14 @@
                     <div class="col-md-2 text-center">
                         <div class="input-group">
                             <span class="input-group-btn">
-                                <button class="btn btn-default">
+                                <button class="btn btn-default" onclick="carrinho.DecrementoQuantidade(this)">
                                     <span class="glyphicon-minus"></span>
                                 </button>
                             </span>
                             <input type="text" value="@itemPedido.Quantidade"
-                                   class="form-control text-center" />
+                                   class="form-control text-center" onblur="carrinho.AtualizarQuantidade(this)"/>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" onclick="IncrementoQuantidade(this)">
+                                <button class="btn btn-default" onclick="carrinho.IncrementoQuantidade(this)">
                                     <span class="glyphicon-plus"></span>
                                 </button>
                             </span>
@@ -92,21 +92,5 @@
 
 @section Scripts
 {
-    <script type="text/javascript">
-        function IncrementoQuantidade(btnIncremento) {
-            var divProduto = $(btnIncremento).parents('[item-id]');
-            const idItem = $(divProduto).attr('item-id');
-            const quantidadeAtual = $(divProduto).find('input').val();
-
-            $.ajax({
-                url: '/pedido/AtualizarQuantidadeItem',
-                contentType: 'application/json; charset=utf-8',
-                type: 'PUT',
-                data: JSON.stringify({
-                    Id: idItem,
-                    Quantidade: quantidadeAtual
-                })
-            });
-        }
-    </script>
+    <script src="~/js/carrinho.js"></script>
 }

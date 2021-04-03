@@ -38,11 +38,6 @@ namespace Alura_MVC.Repositories
                     itemPedido = new ItemPedido(pedido, produto, 1, produto.Preco);
                     context.Set<ItemPedido>().Add(itemPedido);
                 }
-                else
-                {
-                    itemPedido.IncrementarQuantidade();
-                    context.Set<ItemPedido>().Update(itemPedido);
-                }
 
                 context.SaveChanges();
             }
