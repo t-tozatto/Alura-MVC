@@ -1,3 +1,5 @@
+using Alura_MVC.Repositories;
+using Alura_MVC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +28,15 @@ namespace Alura_MVC
             // AddSingleton - Objetos singleton são os mesmos para todas as requisições.
 
             services.AddControllersWithViews();
+
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IDataSource, DataSource>();
+
+            services.AddTransient<IProdutoRepository, ProdutoRepository>();
+            services.AddTransient<ICadastroRepository, CadastroRepository>();
+            services.AddTransient<IItemPedidoRepository, ItemPedidoRepository>();
+            services.AddTransient<IPedidoRepository, PedidoRepository>();
+
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default"))
             );
@@ -59,7 +69,7 @@ namespace Alura_MVC
                     pattern: "{controller=Pedido}/{action=Carrossel}/{id?}");
             });
 
-            serviceProvider.GetService<ApplicationContext>().Database.Migrate();
+            serviceProvider.GetService<IDataSource>().InicializaBD();
         }
     }
 }
