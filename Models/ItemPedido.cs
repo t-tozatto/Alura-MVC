@@ -27,5 +27,10 @@ namespace Alura_MVC.Models
             Quantidade = quantidade;
             PrecoUnitario = precoUnitario;
         }
+
+        public void IncrementarQuantidade()
+        {
+            Quantidade += 1;
+        }
     }
 }

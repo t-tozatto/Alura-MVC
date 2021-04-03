@@ -28,6 +28,8 @@ namespace Alura_MVC
             // AddSingleton - Objetos singleton são os mesmos para todas as requisições.
 
             services.AddControllersWithViews();
+            services.AddDistributedMemoryCache();
+            services.AddSession();
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IDataSource, DataSource>();
@@ -59,6 +61,7 @@ namespace Alura_MVC
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthorization();
 
@@ -66,7 +69,7 @@ namespace Alura_MVC
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Pedido}/{action=Carrossel}/{id?}");
+                    pattern: "{controller=Pedido}/{action=Carrossel}/{codigo?}");
             });
 
             serviceProvider.GetService<IDataSource>().InicializaBD();
