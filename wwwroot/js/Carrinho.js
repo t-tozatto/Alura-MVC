@@ -39,8 +39,26 @@
             contentType: 'application/json; charset=utf-8',
             type: 'PUT',
             data: JSON.stringify(data)
+        }).done(function (response) {
+            let carrinho = response.carrinho;
+            let itemPedido = response.item;
+            let linhaItemPedido = $('[item-id=' + itemPedido.id + ']');
+            linhaItemPedido.find('input').prop('value', itemPedido.quantidade);
+            linhaItemPedido.find('[subtotal]').html((itemPedido.subtotal).duasCasasDecimais());
+
+            $('[total]').html(carrinho.total.duasCasasDecimais());
+            $('[numero-itens]').html('Total: ' + carrinho.item.length + ' itens');
+
+            if (itemPedido.quantidade < 1)
+                linhaItemPedido.remove();
+        }).fail(function (fail) {
+            debugger;
         });
     }
 }
 
 var carrinho = new Carrinho();
+
+Number.prototype.duasCasasDecimais = function () {
+    return this.toFixed(2).replace('.', ',');
+}

@@ -7,5 +7,7 @@ namespace Alura_MVC.Repositories.Interfaces
     {
         void SaveProdutos(List<Livro> livros);
         List<Produto> GetProdutos();
+        Produto GetProduto(int id);
+        Produto GetProduto(string codigoProduto);
     }
 }

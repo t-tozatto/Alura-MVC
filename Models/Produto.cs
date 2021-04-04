@@ -7,8 +7,10 @@ namespace Alura_MVC.Models
     {
         [Required]
         public string Codigo { get; private set; }
+        
         [Required]
         public string Nome { get; private set; }
+        
         [Required]
         [Column(TypeName = "decimal(18,4)")]
         public decimal Preco { get; private set; }

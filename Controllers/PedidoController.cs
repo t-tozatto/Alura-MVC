@@ -1,4 +1,6 @@
 ﻿using Alura_MVC.Models;
+using Alura_MVC.Models.Response;
+using Alura_MVC.Models.ViewModel;
 using Alura_MVC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -29,7 +31,8 @@ namespace Alura_MVC.Controllers
         {
             Pedido pedido = pedidoRepository.GetPedido();
             pedidoRepository.AddItemPedido(codigo, pedido);
-            return View(pedido.Item);
+
+            return View(new CarrinhoViewModel(pedido.Item));
         }
 
         public IActionResult Carrossel()
@@ -43,10 +46,11 @@ namespace Alura_MVC.Controllers
         }
 
         [HttpPut] 
-        public void AtualizarQuantidadeItem([FromBody] object itemPedido)
+        public AtualizarQuantidadeItemResponse AtualizarQuantidadeItem([FromBody] object itemPedido)
         {
             ItemPedido item = JsonConvert.DeserializeObject<ItemPedido>(itemPedido.ToString());
-            itemPedidoRepository.UpdateQuantidade(item.Id, item.Quantidade);
+            var retorno = pedidoRepository.UpdateQuantidade(item.Id, item.Quantidade);
+            return retorno;
         }
     }
 }

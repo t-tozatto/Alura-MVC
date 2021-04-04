@@ -1,4 +1,4 @@
-﻿@model IList<ItemPedido>;
+﻿@model CarrinhoViewModel;
 @{ ViewData["Title"] = "Carrinho"; }
 
 <h3>Meu Carrinho</h3>
@@ -25,10 +25,8 @@
     </div>
     <div class="panel-body">
         @{
-            decimal valorTotal = 0;
-            foreach (ItemPedido itemPedido in Model)
+            foreach (ItemPedido itemPedido in Model.Item)
             {
-                valorTotal += itemPedido.Quantidade * itemPedido.PrecoUnitario;
                 <div class="row row-center linha-produto" item-id="@itemPedido.Id">
                     <div class="col-md-3">
                         <img class="img-produto-carrinho" src="/images/produtos/large_@(itemPedido.Produto.Codigo).jpg" />
@@ -53,7 +51,7 @@
                     </div>
                     <div class="col-md-2">
                         R$ <span class="pull-right" subtotal>
-                            @((itemPedido.Quantidade * itemPedido.PrecoUnitario).ToString("N2"))
+                            @((itemPedido.Subtotal).ToString("N2"))
                         </span>
                     </div>
                 </div>
@@ -64,13 +62,13 @@
         <div class="row">
             <div class="col-md-10">
                 <span numero-itens>
-                    Total: @Model.Count
+                    Total: @Model.Item.Count
                     itens
                 </span>
             </div>
             <div class="col-md-2">
                 Total: R$ <span class="pull-right" total>
-                    @valorTotal.ToString("N2")
+                    @Model.Total.ToString("N2")
                 </span>
             </div>
         </div>

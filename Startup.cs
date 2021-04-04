@@ -27,7 +27,10 @@ namespace Alura_MVC
             // AddScoped - Objetos com escopo são os mesmos em uma requisições, mas diferentes entre requisições diferentes.
             // AddSingleton - Objetos singleton são os mesmos para todas as requisições.
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                   options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddDistributedMemoryCache();
             services.AddSession();
 

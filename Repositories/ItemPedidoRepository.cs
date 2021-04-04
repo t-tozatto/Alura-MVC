@@ -1,6 +1,6 @@
 ﻿using Alura_MVC.Models;
 using Alura_MVC.Repositories.Interfaces;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Alura_MVC.Repositories
@@ -11,16 +11,39 @@ namespace Alura_MVC.Repositories
         {
         }
 
-        public void UpdateQuantidade(int id, int quantidade)
+        public void AdicionarItemPedido(ItemPedido itemPedido, bool salvarAlteracao = true)
         {
-            ItemPedido item = dbSet.Where(x => x.Id.Equals(id)).SingleOrDefault();
+            dbSet.Add(itemPedido);
 
-            if (item == null)
-                throw new ArgumentException("Item do pedido não encontrado");
+            if (salvarAlteracao)
+                context.SaveChanges();
+        }
 
-            item.UpdateQuantidade(quantidade);
+        public void DeleteItem(int id, bool salvarAlteracao = true)
+        {
+            DeleteItem(GetItemPedido(id), salvarAlteracao);
+        }
 
-            context.SaveChanges();
+        public void DeleteItem(ItemPedido itemPedido, bool salvarAlteracao = true)
+        {
+            dbSet.Remove(itemPedido);
+
+            if (salvarAlteracao)
+                context.SaveChanges();
+        }
+
+        public ItemPedido GetItemPedido(int id)
+        {
+            return dbSet.Where(x => x.Id.Equals(id)).SingleOrDefault();
+        }
+
+        public ItemPedido GetItemPedido(int idProduto, int idPedido)
+        {
+            return dbSet
+                .Include(i => i.Produto)
+                .Include(i => i.Pedido)
+                .Where(ip => ip.Produto.Id.Equals(idProduto) && ip.Pedido.Id.Equals(idPedido))
+                .SingleOrDefault();
         }
     }
 }

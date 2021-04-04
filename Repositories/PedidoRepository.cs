@@ -1,4 +1,6 @@
 ﻿using Alura_MVC.Models;
+using Alura_MVC.Models.Response;
+using Alura_MVC.Models.ViewModel;
 using Alura_MVC.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +12,17 @@ namespace Alura_MVC.Repositories
     public class PedidoRepository : BaseRepository<Pedido>, IPedidoRepository
     {
         private readonly IHttpContextAccessor contextAccessor;
+        private readonly IItemPedidoRepository itemPedidoRepository;
+        private readonly IProdutoRepository produtoRepository;
 
-        public PedidoRepository(ApplicationContext context, IHttpContextAccessor contextAccessor) : base(context)
+        public PedidoRepository(ApplicationContext context, 
+            IHttpContextAccessor contextAccessor,
+            IItemPedidoRepository itemPedidoRepository,
+            IProdutoRepository produtoRepository) : base(context)
         {
             this.contextAccessor = contextAccessor;
+            this.itemPedidoRepository = itemPedidoRepository;
+            this.produtoRepository = produtoRepository;
         }
 
         public void AddItemPedido(string codigoProduto, Pedido pedido)
@@ -23,21 +32,13 @@ namespace Alura_MVC.Repositories
                 if (pedido == null)
                     throw new ArgumentException("Pedido não encontrado!");
 
-                Produto produto = context.Set<Produto>().Where(p => p.Codigo.Equals(codigoProduto)).SingleOrDefault();
+                Produto produto = produtoRepository.GetProduto(codigoProduto);
                 if (produto == null)
                     throw new ArgumentException("Produto não encontrado!");
 
-                ItemPedido itemPedido = context.Set<ItemPedido>()
-                    .Include(i => i.Produto)
-                    .Include(i => i.Pedido)
-                    .Where(ip => ip.Produto.Id.Equals(produto.Id) && ip.Pedido.Id.Equals(pedido.Id))
-                    .SingleOrDefault();
-
+                ItemPedido itemPedido = itemPedidoRepository.GetItemPedido(produto.Id, pedido.Id); 
                 if (itemPedido == null)
-                {
-                    itemPedido = new ItemPedido(pedido, produto, 1, produto.Preco);
-                    context.Set<ItemPedido>().Add(itemPedido);
-                }
+                    itemPedidoRepository.AdicionarItemPedido(new ItemPedido(pedido, produto, 1, produto.Preco), false);
 
                 context.SaveChanges();
             }
@@ -72,6 +73,23 @@ namespace Alura_MVC.Repositories
         public void SetPedidoId(int pedidoId)
         {
             contextAccessor.HttpContext.Session.SetInt32("PedidoId", pedidoId);
+        }
+
+        public AtualizarQuantidadeItemResponse UpdateQuantidade(int id, int quantidade)
+        {
+            ItemPedido item = itemPedidoRepository.GetItemPedido(id);
+
+            if (item == null)
+                throw new ArgumentException("Item do pedido não encontrado");
+
+            item.UpdateQuantidade(quantidade);
+
+            if (quantidade < 1)
+                itemPedidoRepository.DeleteItem(item, false);
+
+            context.SaveChanges();
+
+            return new AtualizarQuantidadeItemResponse(item, new CarrinhoViewModel(GetPedido().Item));
         }
     }
 }

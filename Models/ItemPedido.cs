@@ -11,17 +11,23 @@ namespace Alura_MVC.Models
         [Required]
         [DataMember]
         public Pedido Pedido { get; private set; }
+        
         [Required]
         [DataMember]
         public Produto Produto { get; private set; }
+        
         [Required]
         [DataMember]
         [JsonProperty]
         public int Quantidade { get; private set; }
+        
         [Required]
         [Column(TypeName = "decimal(18,4)")]
         [DataMember]
         public decimal PrecoUnitario { get; private set; }
+
+        [DataMember]
+        public decimal Subtotal => Quantidade * PrecoUnitario;
 
         public ItemPedido()
         {

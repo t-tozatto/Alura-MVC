@@ -11,6 +11,16 @@ namespace Alura_MVC.Repositories
         {
         }
 
+        public Produto GetProduto(int id)
+        {
+            return dbSet.Where(p => p.Id.Equals(id)).SingleOrDefault();
+        }
+
+        public Produto GetProduto(string codigoProduto)
+        {
+            return dbSet.Where(p => p.Codigo.Equals(codigoProduto)).SingleOrDefault();
+        }
+
         public List<Produto> GetProdutos()
         {
             return dbSet.ToList();
