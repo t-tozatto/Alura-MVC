@@ -8,5 +8,10 @@ namespace Alura_MVC.Repositories
         public CadastroRepository(ApplicationContext context) : base(context)
         {
         }
+
+        public void UpdateCadastro(int idCadastro, Cadastro cadastro)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

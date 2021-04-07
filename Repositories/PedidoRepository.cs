@@ -14,15 +14,18 @@ namespace Alura_MVC.Repositories
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IItemPedidoRepository itemPedidoRepository;
         private readonly IProdutoRepository produtoRepository;
+        private readonly ICadastroRepository cadastroRepository;
 
         public PedidoRepository(ApplicationContext context, 
             IHttpContextAccessor contextAccessor,
             IItemPedidoRepository itemPedidoRepository,
-            IProdutoRepository produtoRepository) : base(context)
+            IProdutoRepository produtoRepository,
+            ICadastroRepository cadastroRepository) : base(context)
         {
             this.contextAccessor = contextAccessor;
             this.itemPedidoRepository = itemPedidoRepository;
             this.produtoRepository = produtoRepository;
+            this.cadastroRepository = cadastroRepository;
         }
 
         public void AddItemPedido(string codigoProduto, Pedido pedido)
@@ -73,6 +76,13 @@ namespace Alura_MVC.Repositories
         public void SetPedidoId(int pedidoId)
         {
             contextAccessor.HttpContext.Session.SetInt32("PedidoId", pedidoId);
+        }
+
+        public Pedido UpdateCadastro(Cadastro cadastro)
+        {
+            Pedido pedido = GetPedido();
+            cadastroRepository.UpdateCadastro(pedido.Cadastro.Id, cadastro);
+            return pedido;
         }
 
         public AtualizarQuantidadeItemResponse UpdateQuantidade(int id, int quantidade)

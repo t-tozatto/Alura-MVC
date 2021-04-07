@@ -8,5 +8,6 @@ namespace Alura_MVC.Repositories.Interfaces
         Pedido GetPedido();
         void AddItemPedido(string codigoProduto, Pedido pedido);
         AtualizarQuantidadeItemResponse UpdateQuantidade(int id, int quantidade);
+        Pedido UpdateCadastro(Cadastro cadastro);
     }
 }

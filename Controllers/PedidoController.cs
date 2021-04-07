@@ -24,6 +24,11 @@ namespace Alura_MVC.Controllers
 
         public IActionResult Cadastro()
         {
+            Pedido pedido = pedidoRepository.GetPedido();
+            
+            if (pedido == null || pedido.Item.Count == 0)
+                return RedirectToAction("Carrossel");
+
             return View();
         }
 
@@ -40,9 +45,13 @@ namespace Alura_MVC.Controllers
             return View(produtoRepository.GetProdutos());
         }
 
-        public IActionResult Resumo()
+        [HttpPost]
+        public IActionResult Resumo(Cadastro cadastro)
         {
-            return View(pedidoRepository.GetPedido());
+            if(ModelState.IsValid)
+                return View(pedidoRepository.UpdateCadastro(cadastro));
+
+            return RedirectToAction("Cadastro");
         }
 
         [HttpPut] 

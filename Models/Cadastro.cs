@@ -7,31 +7,33 @@ namespace Alura_MVC.Models
     {
         public virtual List<Pedido> Pedido { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nome obrigatório")]
+        [MinLength(5, ErrorMessage = "Nome deve ter no mínimo 5 caracteres")]
+        [MaxLength(50, ErrorMessage = "Nome deve ter no máximo 5 caracteres")]
         public string Nome { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "E-mail obrigatório")]
         public string Email { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "Telefone obrigatório")]
         public string Telefone { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "Endereço obrigatório")]
         public string Endereco { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "Complemento obrigatório")]
         public string Complemento { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "Bairro obrigatório")]
         public string Bairro { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "Município obrigatório")]
         public string Municipio { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "UF obrigatório")]
         public string UF { get; set; } = "";
-        
-        [Required]
+
+        [Required(ErrorMessage = "CEP obrigatório")]
         public string CEP { get; set; } = "";
 
         public Cadastro()
