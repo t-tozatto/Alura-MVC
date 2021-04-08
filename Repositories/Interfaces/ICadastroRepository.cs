@@ -4,6 +4,6 @@ namespace Alura_MVC.Repositories.Interfaces
 {
     public interface ICadastroRepository
     {
-        void UpdateCadastro(int idCadastro, Cadastro cadastro);
+        Cadastro UpdateCadastro(int idCadastro, Cadastro cadastro);
     }
 }

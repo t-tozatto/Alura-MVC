@@ -56,6 +56,7 @@ namespace Alura_MVC.Repositories
                 pedido = dbSet.Where(pedido => pedido.Id == pedidoId)
                     .Include(p => p.Item)
                         .ThenInclude(i => i.Produto)
+                    .Include(p => p.Cadastro)
                     .SingleOrDefault();
             else
             {

@@ -40,5 +40,10 @@ namespace Alura_MVC.Models
         {
         }
 
+        internal void Update(Cadastro cadastro)
+        {
+            Funcao.CopyPropertiesTo(this, cadastro);
+        }
+
     }
 }

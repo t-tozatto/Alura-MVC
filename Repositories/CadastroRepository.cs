@@ -1,5 +1,7 @@
 ﻿using Alura_MVC.Models;
 using Alura_MVC.Repositories.Interfaces;
+using System;
+using System.Linq;
 
 namespace Alura_MVC.Repositories
 {
@@ -9,9 +11,17 @@ namespace Alura_MVC.Repositories
         {
         }
 
-        public void UpdateCadastro(int idCadastro, Cadastro cadastro)
+        public Cadastro UpdateCadastro(int idCadastro, Cadastro cadastro)
         {
-            throw new System.NotImplementedException();
+            Cadastro cadastroDb = dbSet.Where(c => c.Id.Equals(idCadastro)).SingleOrDefault();
+
+            if (cadastroDb == null)
+                throw new ArgumentException("Não foi possível achar o cadastro");
+
+            cadastroDb.Update(cadastro);
+            context.SaveChanges();
+
+            return cadastroDb;
         }
     }
 }
